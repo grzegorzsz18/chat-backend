@@ -19,4 +19,6 @@ public class User {
     long id;
     String nick;
     String password;
+    String email;
+    boolean enabled;
 }
