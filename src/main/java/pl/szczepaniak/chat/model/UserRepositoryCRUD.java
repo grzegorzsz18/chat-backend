@@ -4,6 +4,6 @@ import org.springframework.data.repository.CrudRepository;
 import pl.szczepaniak.chat.model.entity.User;
 
 
-public interface UserCRUD extends CrudRepository<User, Long> {
+public interface UserRepositoryCRUD extends CrudRepository<User, Long> {
 
 }
