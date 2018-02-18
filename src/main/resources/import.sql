@@ -1,3 +1,3 @@
 
 
-INSERT INTO user(email, enabled, nick, password) VALUES("jan",1,"jan","jan");
+INSERT INTO user(email, enabled, nick, password) VALUES("jan@wp.pl",1,"jan12","password");

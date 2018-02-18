@@ -11,6 +11,7 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore;
 import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
 
 import javax.sql.DataSource;
@@ -19,43 +20,33 @@ import javax.sql.DataSource;
 @EnableAuthorizationServer
 public class Oauth2AuthServerConfig extends AuthorizationServerConfigurerAdapter{
 
-    DataSource dataSource;
-    AuthenticationManager authenticationManager;
+    private AuthenticationManager authenticationManager;
+    private DataSource dataSource;
 
     @Autowired
-    public Oauth2AuthServerConfig(@Qualifier("dataSource") DataSource dataSource, AuthenticationManager authenticationManager) {
+    public Oauth2AuthServerConfig(AuthenticationManager authenticationManager,
+                                  @Qualifier("dataSource") DataSource dataSource) {
         this.dataSource = dataSource;
         this.authenticationManager = authenticationManager;
     }
 
     @Override
-    public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
-        security
-                .tokenKeyAccess("permitAll()")
-                .checkTokenAccess("isAuthenticated()");
-    }
-
-    @Override
-    public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-        clients
-                .inMemory()
-                .withClient("chatClientId")
-                .secret("chatClientSecret")
-                .authorizedGrantTypes("password", "authorization_code", "refresh_token")
-                .accessTokenValiditySeconds(3600)
-                .refreshTokenValiditySeconds(28*24*3600)
-                .scopes("read");
-    }
-
-    @Override
-    public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
-        endpoints
-                .tokenStore(tokenStore())
+    public void configure(final AuthorizationServerEndpointsConfigurer endpoints) {
+        endpoints.tokenStore(tokenStore())
                 .authenticationManager(authenticationManager);
     }
 
-    @Bean
-    public TokenStore tokenStore(){
-        return new JdbcTokenStore(dataSource);
+    @Override
+    public void configure(final ClientDetailsServiceConfigurer clients) throws Exception {
+        clients.inMemory()
+                .withClient("client")
+                .secret("clientpassword")
+                .scopes("read", "write")
+                .authorizedGrantTypes("password","authorization_code", "refresh_token")
+                .accessTokenValiditySeconds(3600)
+                .refreshTokenValiditySeconds(28*24*3600);
     }
+
+    @Bean public TokenStore tokenStore() { return new JdbcTokenStore(dataSource); }
+
 }
