@@ -1,6 +1,7 @@
 package pl.szczepaniak.chat.model.entity;
 
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 
@@ -24,5 +25,5 @@ public class Message {
     @ManyToOne
     @ElementCollection(targetClass=User.class)
     User user;
-    boolean isDisplayed;
+    boolean isDisplayed = false;
 }

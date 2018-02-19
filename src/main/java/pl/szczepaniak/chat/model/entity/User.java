@@ -22,5 +22,5 @@ public class User {
     String nick;
     String password;
     String email;
-    boolean enabled;
+    boolean enabled = true;
 }

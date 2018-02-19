@@ -28,8 +28,8 @@ public class Oauth2ResourceServerConfig extends ResourceServerConfigurerAdapter{
     public void configureGlobal(final AuthenticationManagerBuilder auth) throws Exception {
         auth.jdbcAuthentication()
                 .dataSource(dataSource)
-                .usersByUsernameQuery("SELECT email, password, enabled  FROM user WHERE email=?")
-                .authoritiesByUsernameQuery("SELECT * FROM user WHERE email=?");
+                .usersByUsernameQuery("SELECT email, password, enabled  FROM users WHERE email=?")
+                .authoritiesByUsernameQuery("SELECT * FROM users WHERE email=?");
                 //.passwordEncoder(passwordEncoder());
     }
 
