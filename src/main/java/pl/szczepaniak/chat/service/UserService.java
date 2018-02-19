@@ -26,4 +26,9 @@ public class UserService {
             throw new UserNotFoundException();
         }
     }
+
+    public void addNewUser(String email, String password, String nick){
+        userRepositoryCRUD.save(User.builder().password(password).nick(nick).email(email).build());
+    }
+
 }
