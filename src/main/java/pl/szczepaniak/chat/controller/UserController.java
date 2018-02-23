@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import pl.szczepaniak.chat.exceptions.EmailAlreadyRegistered;
+import pl.szczepaniak.chat.exceptions.NickAlreadyRegistered;
 import pl.szczepaniak.chat.exceptions.UserNotFoundException;
 import pl.szczepaniak.chat.model.UserRepositoryCRUD;
 import pl.szczepaniak.chat.model.entity.User;
@@ -24,9 +26,9 @@ public class UserController {
     @PutMapping("/new")
     public ResponseEntity addNewUser(@RequestParam(value = "email") String email,
                            @RequestParam(value = "password") String password,
-                           @RequestParam(value = "nick") String nick){
+                           @RequestParam(value = "nick") String nick) throws EmailAlreadyRegistered, NickAlreadyRegistered {
         userService.addNewUser(email, password, nick);
-        return new ResponseEntity(HttpStatus.ACCEPTED);
+        return new ResponseEntity(HttpStatus.CREATED);
     }
 
 }

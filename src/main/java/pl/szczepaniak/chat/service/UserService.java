@@ -2,6 +2,8 @@ package pl.szczepaniak.chat.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pl.szczepaniak.chat.exceptions.EmailAlreadyRegistered;
+import pl.szczepaniak.chat.exceptions.NickAlreadyRegistered;
 import pl.szczepaniak.chat.exceptions.UserNotFoundException;
 import pl.szczepaniak.chat.model.UserRepositoryCRUD;
 import pl.szczepaniak.chat.model.entity.User;
@@ -27,7 +29,14 @@ public class UserService {
         }
     }
 
-    public void addNewUser(String email, String password, String nick){
-        userRepositoryCRUD.save(User.builder().password(password).nick(nick).email(email).build());
+    public void addNewUser(String email, String password, String nick) throws EmailAlreadyRegistered, NickAlreadyRegistered {
+        if(userRepositoryCRUD.getUserByEmail(email).isPresent()){
+            throw new EmailAlreadyRegistered();
+        }
+        if(userRepositoryCRUD.getUserByNick(nick).isPresent()){
+            throw new NickAlreadyRegistered();
+        }
+
+        userRepositoryCRUD.save(User.builder().password(password).nick(nick).email(email).enabled(true).build());
     }
 }

@@ -7,15 +7,28 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+import pl.szczepaniak.chat.exceptions.EmailAlreadyRegistered;
+import pl.szczepaniak.chat.exceptions.NickAlreadyRegistered;
 import pl.szczepaniak.chat.exceptions.UserNotFoundException;
 
 @ControllerAdvice
 public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler{
 
     @ExceptionHandler(UserNotFoundException.class)
-    protected ResponseEntity<Object> handleConflict(Exception ex, WebRequest request){
+    protected ResponseEntity<Object> handleUserNotFound(Exception ex, WebRequest request){
         String body = "user not found \n";
-        body += request.toString();
+        return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(body);
+    }
+
+    @ExceptionHandler(EmailAlreadyRegistered.class)
+    protected ResponseEntity<Object> handleEmailRegistered(Exception ex, WebRequest request){
+        String body = "email already registered \n";
+        return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(body);
+    }
+
+    @ExceptionHandler(NickAlreadyRegistered.class)
+    protected ResponseEntity<Object> handleNickRegistered(Exception ex, WebRequest request){
+        String body = "nick already registered \n";
         return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(body);
     }
 }
