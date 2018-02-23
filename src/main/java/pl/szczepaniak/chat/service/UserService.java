@@ -30,5 +30,4 @@ public class UserService {
     public void addNewUser(String email, String password, String nick){
         userRepositoryCRUD.save(User.builder().password(password).nick(nick).email(email).build());
     }
-
 }
