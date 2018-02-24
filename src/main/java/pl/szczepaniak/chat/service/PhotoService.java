@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
+import java.io.*;
 
 @Service
 public class PhotoService {
@@ -23,7 +23,20 @@ public class PhotoService {
         long id = userService.getIdByEmail(email);
         File file = new File(profilePicturePath + id + ".jpg");
         uploadingFile.transferTo(file);
+    }
 
+    public byte[] getProfilePicture(String email) throws Exception{
+        long id = userService.getIdByEmail(email);
+        String fileName = profilePicturePath + id + ".jpg";
+        InputStream inputStream = new FileInputStream(fileName);
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        byte[] buffer = new byte[512];
+        int l = inputStream.read(buffer);
+        while(l >= 0) {
+            outputStream.write(buffer, 0, l);
+            l = inputStream.read(buffer);
+        }
+        return outputStream.toByteArray();
     }
 
 }
