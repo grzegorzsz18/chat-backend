@@ -39,4 +39,14 @@ public class UserService {
 
         userRepositoryCRUD.save(User.builder().password(password).nick(nick).email(email).enabled(true).build());
     }
+
+    public String getUserNick(String email) throws UserNotFoundException {
+        Optional<User> user = userRepositoryCRUD.getUserByEmail(email);
+        if(user.isPresent()){
+            return user.get().getNick();
+        }
+        else {
+            throw new UserNotFoundException();
+        }
+    }
 }

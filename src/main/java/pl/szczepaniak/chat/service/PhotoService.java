@@ -1,5 +1,8 @@
 package pl.szczepaniak.chat.service;
 
+import net.coobird.thumbnailator.Thumbnailator;
+import net.coobird.thumbnailator.Thumbnails;
+import net.coobird.thumbnailator.name.Rename;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,8 +24,10 @@ public class PhotoService {
     public void saveProfilePicture(String email,  MultipartFile uploadingFile) throws Exception {
 
         long id = userService.getIdByEmail(email);
-        File file = new File(profilePicturePath + id + ".jpg");
+        String name = profilePicturePath + id + ".jpg";
+        File file = new File(name);
         uploadingFile.transferTo(file);
+        resizePicture(name);
     }
 
     public byte[] getProfilePicture(String email) throws Exception{
@@ -37,6 +42,12 @@ public class PhotoService {
             l = inputStream.read(buffer);
         }
         return outputStream.toByteArray();
+    }
+
+    private void resizePicture(String name) throws IOException {
+        Thumbnails.of(new File(name))
+                .size(50, 50)
+                .toFile(new File(name));
     }
 
 }

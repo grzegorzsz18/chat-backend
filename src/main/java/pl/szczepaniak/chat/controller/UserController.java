@@ -32,6 +32,11 @@ public class UserController {
         return userService.getIdByEmail(email);
     }
 
+    @GetMapping("/nick")
+    public ResponseEntity<String> getUserNick(@RequestParam(value = "email") String email) throws UserNotFoundException {
+        return new ResponseEntity<>(userService.getUserNick(email),HttpStatus.OK);
+    }
+
     @PutMapping("/new")
     public ResponseEntity addNewUser(@RequestParam(value = "email") String email,
                            @RequestParam(value = "password") String password,
