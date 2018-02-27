@@ -51,7 +51,9 @@ public class Oauth2ResourceServerConfig extends ResourceServerConfigurerAdapter{
         http
                 .cors().and()
                 .authorizeRequests()
+                //todo remove below
                 .antMatchers("/user/new").permitAll()
+                .antMatchers("/users").permitAll()
                 .antMatchers("/user/**").permitAll()
                 .antMatchers("/user/picture/**").permitAll()
                 .anyRequest().authenticated().and()

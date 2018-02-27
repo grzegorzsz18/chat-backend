@@ -11,8 +11,10 @@ import pl.szczepaniak.chat.exceptions.NickAlreadyRegistered;
 import pl.szczepaniak.chat.exceptions.UserNotFoundException;
 import pl.szczepaniak.chat.service.PhotoService;
 import pl.szczepaniak.chat.service.UserService;
+import pl.szczepaniak.chat.service.dto.UserDTO;
 
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/user")
@@ -57,6 +59,12 @@ public class UserController {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Content-Type", "image/png");
         return new ResponseEntity<byte[]>(photoService.getProfilePicture(email), headers, HttpStatus.OK);
+    }
+
+    @GetMapping("/users")
+    public ResponseEntity<List<UserDTO>> getAllUsers(@RequestParam(value = "page") Integer page,
+                                                     @RequestParam(value = "limit") Integer limit) throws UserNotFoundException {
+        return new ResponseEntity<>(userService.getAllUsers(page, limit), HttpStatus.OK);
     }
 
 
