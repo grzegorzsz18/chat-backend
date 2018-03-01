@@ -47,24 +47,11 @@ public class UserController {
         return new ResponseEntity(HttpStatus.CREATED);
     }
 
-    @PostMapping("/picture")
-    public ResponseEntity addProfilePicture(@RequestParam(value = "email") String email,
-                                            @RequestParam(value = "fileKey")MultipartFile picture) throws Exception{
-            photoService.saveProfilePicture(email, picture);
-            return new ResponseEntity(HttpStatus.CREATED);
-    }
-
-    @GetMapping("/picture/{email:.+}")
-    public ResponseEntity<byte[]> getProfilePicture(@PathVariable("email") String  email) throws Exception {
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Content-Type", "image/png");
-        return new ResponseEntity<byte[]>(photoService.getProfilePicture(email), headers, HttpStatus.OK);
-    }
-
     @GetMapping("/users")
-    public ResponseEntity<List<UserDTO>> getAllUsers(@RequestParam(value = "page") Integer page,
-                                                     @RequestParam(value = "limit") Integer limit) throws UserNotFoundException {
-        return new ResponseEntity<>(userService.getAllUsers(page, limit), HttpStatus.OK);
+    public ResponseEntity<List<UserDTO>> getAllUsers(@RequestParam(value = "page", required = false, defaultValue = "0") Integer page,
+                                                     @RequestParam(value = "limit", required = false, defaultValue = "10") Integer limit,
+                                                     @RequestParam(value = "nick", required = false, defaultValue = "") String nick) throws UserNotFoundException {
+        return new ResponseEntity<>(userService.getAllUsers(nick, page, limit), HttpStatus.OK);
     }
 
 

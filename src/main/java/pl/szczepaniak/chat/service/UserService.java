@@ -57,8 +57,8 @@ public class UserService {
         }
     }
 
-    public List<UserDTO> getAllUsers(Integer page, Integer limit) throws UserNotFoundException {
-        Optional<Page<User>> users = userRepositoryCRUD.findAll(new PageRequest(page, limit));
+    public List<UserDTO> getAllUsers(String nick, Integer page, Integer limit) throws UserNotFoundException {
+        Optional<Page<User>> users = userRepositoryCRUD.findByNickContaining(nick, new PageRequest(page, limit));
         if (users.isPresent()){
             return users.get().getContent().stream()
                     .map(user -> UserToDtoConverter.convert(user))
