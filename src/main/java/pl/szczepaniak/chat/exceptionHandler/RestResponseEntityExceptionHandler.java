@@ -11,6 +11,8 @@ import pl.szczepaniak.chat.exceptions.EmailAlreadyRegistered;
 import pl.szczepaniak.chat.exceptions.NickAlreadyRegistered;
 import pl.szczepaniak.chat.exceptions.UserNotFoundException;
 
+import java.io.FileNotFoundException;
+
 @ControllerAdvice
 public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler{
 
@@ -30,5 +32,11 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     protected ResponseEntity<Object> handleNickRegistered(Exception ex, WebRequest request){
         String body = "nick already registered \n";
         return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(body);
+    }
+
+    @ExceptionHandler(FileNotFoundException.class)
+    protected ResponseEntity<Object> handleFileNotFound(Exception ex, WebRequest request){
+        String body = "file can't be found";
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(body);
     }
 }

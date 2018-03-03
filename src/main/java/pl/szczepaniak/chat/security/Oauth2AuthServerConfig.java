@@ -11,6 +11,7 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
+import pl.szczepaniak.chat.Utils.AppConfig;
 
 import javax.sql.DataSource;
 
@@ -37,12 +38,12 @@ public class Oauth2AuthServerConfig extends AuthorizationServerConfigurerAdapter
     @Override
     public void configure(final ClientDetailsServiceConfigurer clients) throws Exception {
         clients.inMemory()
-                .withClient("client")
-                .secret("clientpassword")
+                .withClient(AppConfig.CLIENT_NAME_SECURITY)
+                .secret(AppConfig.SERVER_PASSWORD_SECURITY)
                 .scopes("read", "write")
                 .authorizedGrantTypes("password","authorization_code", "refresh_token")
-                .accessTokenValiditySeconds(3600)
-                .refreshTokenValiditySeconds(28*24*3600);
+                .accessTokenValiditySeconds(AppConfig.ACCESS_TOKEN_VALIDITY_SECONDS)
+                .refreshTokenValiditySeconds(AppConfig.REFRESH_TOKEN_VALIDITY_SECONDS);
     }
 
     @Bean public TokenStore tokenStore() { return new JdbcTokenStore(dataSource); }
