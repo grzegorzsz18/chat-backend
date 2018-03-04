@@ -3,6 +3,8 @@ package pl.szczepaniak.chat.model.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Builder
@@ -16,11 +18,8 @@ public class Conversation {
     @Id
     @GeneratedValue
     long id;
-    @ManyToOne
+    @OneToMany
     @ElementCollection(targetClass=User.class)
-    User userFirst;
-    @ManyToOne
-    @ElementCollection(targetClass=User.class)
-    User userSecond;
+    Set<User> users;
 
 }

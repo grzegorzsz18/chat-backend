@@ -7,8 +7,11 @@ INSERT INTO users(email, enabled, nick, password) VALUES("janek2@wp.pl",1,"jank2
 INSERT INTO users(email, enabled, nick, password) VALUES("janek3@wp.pl",1,"jank3o","password");
 INSERT INTO users(email, enabled, nick, password) VALUES("janek4@wp.pl",1,"jank4o","password");
 
-
-INSERT INTO conversations(user_first_id, user_second_id) values(1,2);
+INSERT INTO conversations() values(1);
+insert into conversations_users values(1,1);
+insert into conversations_users values(1,2);
+insert into conversations_users values(1,3);
+insert into conversations_users values(1,4);
 
 INSERT INTO messages(is_displayed, text, time, conversation_id, user_id) VALUES(1,"example text1", CURRENT_TIMESTAMP, 1, 1);
 INSERT INTO messages(is_displayed, text, time, conversation_id, user_id) VALUES(1,"example text2", CURRENT_TIMESTAMP, 1, 2);
