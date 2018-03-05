@@ -18,8 +18,7 @@ public class Conversation {
     @Id
     @GeneratedValue
     long id;
-    @OneToMany
-    @ElementCollection(targetClass=User.class)
+    @ManyToMany
     Set<User> users;
 
 }

@@ -6,6 +6,7 @@ import net.coobird.thumbnailator.name.Rename;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import pl.szczepaniak.chat.Utils.AppConfig;
 
 import java.io.*;
 
@@ -46,7 +47,7 @@ public class PhotoService {
 
     private void resizePicture(String name) throws IOException {
         Thumbnails.of(new File(name))
-                .size(50, 50)
+                .size(AppConfig.IMG_SIZE, AppConfig.IMG_SIZE)
                 .toFile(new File(name));
     }
 

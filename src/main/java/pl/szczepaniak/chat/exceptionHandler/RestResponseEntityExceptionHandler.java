@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+import pl.szczepaniak.chat.exceptions.ConversationNotFoundException;
 import pl.szczepaniak.chat.exceptions.EmailAlreadyRegistered;
 import pl.szczepaniak.chat.exceptions.NickAlreadyRegistered;
 import pl.szczepaniak.chat.exceptions.UserNotFoundException;
@@ -37,6 +38,12 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     @ExceptionHandler(FileNotFoundException.class)
     protected ResponseEntity<Object> handleFileNotFound(Exception ex, WebRequest request){
         String body = "file can't be found";
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(body);
+    }
+
+    @ExceptionHandler(ConversationNotFoundException.class)
+    protected ResponseEntity<Object> handleConversationNotFound(Exception ex, WebRequest request){
+        String body = "conversation not found";
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(body);
     }
 }

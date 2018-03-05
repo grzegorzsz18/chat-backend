@@ -16,4 +16,5 @@ import java.util.Optional;
 @Repository
 public interface ConversationRepositoryCRUD extends CrudRepository<Conversation, Long>{
     Optional<Page<Conversation>> findByUsersContains(User user, Pageable pageable);
+    Optional<Conversation> findOneById(Long id);
 }

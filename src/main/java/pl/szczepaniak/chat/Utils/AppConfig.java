@@ -6,4 +6,7 @@ public class AppConfig {
     public final static String CLIENT_NAME_SECURITY = "client";
     public final static Integer ACCESS_TOKEN_VALIDITY_SECONDS = 3600;
     public final static Integer REFRESH_TOKEN_VALIDITY_SECONDS = 28*24*3600;
+
+    //image size
+    public final static int IMG_SIZE = 100;
 }
