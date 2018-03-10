@@ -11,4 +11,5 @@ public class MessageDTO {
     String text;
     Long time;
     Boolean isDisplayed;
+    String autor;
 }

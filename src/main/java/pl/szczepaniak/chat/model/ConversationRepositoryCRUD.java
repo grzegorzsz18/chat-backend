@@ -10,11 +10,15 @@ import org.springframework.stereotype.Repository;
 import pl.szczepaniak.chat.model.entity.Conversation;
 import pl.szczepaniak.chat.model.entity.User;
 
+import javax.jws.soap.SOAPBinding;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Repository
 public interface ConversationRepositoryCRUD extends CrudRepository<Conversation, Long>{
     Optional<Page<Conversation>> findByUsersContains(User user, Pageable pageable);
+    Optional<List<Conversation>> findByUsersContains(User user);
     Optional<Conversation> findOneById(Long id);
+    Optional<List<Conversation>> findByUsersContainsAndUsersContains(User user1, User user2);
 }

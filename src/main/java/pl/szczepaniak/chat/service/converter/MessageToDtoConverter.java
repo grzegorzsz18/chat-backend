@@ -9,6 +9,11 @@ public class MessageToDtoConverter {
     }
 
     public static MessageDTO convert(Message message){
-        return MessageDTO.builder().time(message.getTime()).text(message.getText()).isDisplayed(message.isDisplayed()).build();
+        return MessageDTO.builder()
+                .time(message.getTime())
+                .text(message.getText())
+                .isDisplayed(message.isDisplayed())
+                .autor(message.getUser().getNick())
+                .build();
     }
 }
