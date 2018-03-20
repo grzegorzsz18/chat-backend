@@ -21,4 +21,6 @@ public interface ConversationRepositoryCRUD extends CrudRepository<Conversation,
     Optional<List<Conversation>> findByUsersContains(User user);
     Optional<Conversation> findOneById(Long id);
     Optional<List<Conversation>> findByUsersContainsAndUsersContains(User user1, User user2);
+    @Query("SELECT c.users from Conversation c where c.id = ?1")
+    Set<User> getUsersByConversationId(Long id);
 }

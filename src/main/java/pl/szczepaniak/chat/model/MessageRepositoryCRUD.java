@@ -10,5 +10,5 @@ import java.util.Optional;
 
 public interface MessageRepositoryCRUD extends CrudRepository<Message, Long>{
 
-    Optional<Page<Message>> getAllByConversation(Conversation conversation, Pageable pageable);
+    Optional<Page<Message>> getAllByConversationOrderByTimeDesc(Conversation conversation, Pageable pageable);
 }

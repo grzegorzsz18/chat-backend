@@ -41,7 +41,7 @@ public class MessageService {
             throw new ConversationNotFoundException();
         }
         Optional<Page<Message>> messages = messageRepositoryCRUD
-                .getAllByConversation(conversation.get(), new PageRequest(page, limit));
+                .getAllByConversationOrderByTimeDesc(conversation.get(), new PageRequest(page, limit));
         if(!messages.isPresent()){
             throw new ConversationNotFoundException();
         }
