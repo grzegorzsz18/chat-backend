@@ -53,23 +53,23 @@ public class MessageService {
     }
 
 
-    public void sendMessage(String text, String userEmail, long conversationId ) throws UserNotFoundException, ConversationNotFoundException {
-        Optional<User> user = userRepositoryCRUD.getUserByEmail(userEmail);
+    public MessageDTO sendMessage(MessageDTO m) throws UserNotFoundException, ConversationNotFoundException {
+        Optional<User> user = userRepositoryCRUD.getUserByNick(m.getAutor());
         if(!user.isPresent()){
             throw new UserNotFoundException();
         }
-        Optional<Conversation> conversation = conversationRepositoryCRUD.findOneById(conversationId);
+        Optional<Conversation> conversation = conversationRepositoryCRUD.findOneById(m.getConversationId());
         if(!conversation.isPresent()){
             throw new ConversationNotFoundException();
         }
-        messageRepositoryCRUD.save(
-                Message.builder()
+        Message message = Message.builder()
                 .conversation(conversation.get())
                 .isDisplayed(false)
-                .text(text)
+                .text(m.getText())
                 .user(user.get())
                 .time(System.currentTimeMillis())
-                .build()
-        );
+                .build();
+        messageRepositoryCRUD.save(message);
+        return MessageToDtoConverter.convert(message);
     }
 }

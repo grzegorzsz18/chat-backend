@@ -28,14 +28,4 @@ public class MessageController {
                                                         @RequestParam(value = "limit" , required = false, defaultValue = "10") Integer limit) throws ConversationNotFoundException {
         return new ResponseEntity<>(messageService.getAllByConversation(id, page, limit), HttpStatus.OK);
     }
-
-    @PutMapping
-    public ResponseEntity sendMessage(@RequestBody String textMessage,
-                                      @RequestParam(value = "userEmail") String userEmail,
-                                      @RequestParam(value = "conversationId") Long conversationId) throws UserNotFoundException, ConversationNotFoundException {
-        messageService.sendMessage(textMessage, userEmail, conversationId);
-        return new ResponseEntity(HttpStatus.CREATED);
-    }
-
-
 }

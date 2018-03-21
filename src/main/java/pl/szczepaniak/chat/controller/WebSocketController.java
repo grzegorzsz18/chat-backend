@@ -6,7 +6,10 @@ import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
+import pl.szczepaniak.chat.exceptions.ConversationNotFoundException;
+import pl.szczepaniak.chat.exceptions.UserNotFoundException;
 import pl.szczepaniak.chat.service.WebSocketService;
+import pl.szczepaniak.chat.service.dto.MessageDTO;
 
 @Controller
 public class WebSocketController {
@@ -18,8 +21,8 @@ public class WebSocketController {
         this.webSocketService = webSocketService;
     }
 
-    @MessageMapping("/send/message/{conversationId}")
-    public void onReciveMessage(@DestinationVariable Long conversationId, String message){
-        this.webSocketService.sendForUsers(conversationId, message);
+    @MessageMapping("/send/message")
+    public void onReciveMessage(MessageDTO message) throws UserNotFoundException, ConversationNotFoundException {
+        this.webSocketService.sendForUsers(message);
     }
 }

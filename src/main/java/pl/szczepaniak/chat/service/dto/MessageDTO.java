@@ -8,6 +8,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MessageDTO {
+    Long conversationId;
     String text;
     Long time;
     Boolean isDisplayed;
