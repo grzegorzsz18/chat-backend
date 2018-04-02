@@ -4,7 +4,9 @@ version: '3'
 services:
  spring_server:
   image: chat
-  build: .
+  build:
+   context: .
+   dockerfile: Dockerfile
   ports:
    - "1818:1818"
   environment:
@@ -15,7 +17,10 @@ services:
    - .:/chat
 
  db_mysql:
-  image: mysql:5.7.21
+  image: chat_mysql
+  build:
+   context: .
+   dockerfile: MySQLDockerfile
   environment:
    - MYSQL_USER=root
    - MYSQL_PASSWORD=password
