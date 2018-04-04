@@ -20,10 +20,12 @@ import java.util.stream.Collectors;
 @Service
 public class UserService {
     UserRepositoryCRUD userRepositoryCRUD;
+    EmailService emailService;
 
     @Autowired
-    public UserService(UserRepositoryCRUD userRepositoryCRUD) {
+    public UserService(UserRepositoryCRUD userRepositoryCRUD, EmailService emailService) {
         this.userRepositoryCRUD = userRepositoryCRUD;
+        this.emailService = emailService;
     }
 
     public long getIdByEmail(String email) throws UserNotFoundException {
@@ -44,7 +46,8 @@ public class UserService {
             throw new NickAlreadyRegistered();
         }
 
-        userRepositoryCRUD.save(User.builder().password(password).nick(nick).email(email).enabled(true).build());
+        userRepositoryCRUD.save(User.builder().password(password).nick(nick).email(email).enabled(false).build());
+        emailService.sendConfirmLink(email);
     }
 
     public String getUserNick(String email) throws UserNotFoundException {

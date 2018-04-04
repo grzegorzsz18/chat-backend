@@ -23,7 +23,6 @@ public class PhotoService {
     private final String profilePicturePath = System.getProperty("user.dir") + "/profile/";
 
     public void saveProfilePicture(String email,  MultipartFile uploadingFile) throws Exception {
-
         long id = userService.getIdByEmail(email);
         String name = profilePicturePath + id + ".jpg";
         File file = new File(name);
