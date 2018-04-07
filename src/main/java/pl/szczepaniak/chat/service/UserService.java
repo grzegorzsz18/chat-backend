@@ -10,6 +10,7 @@ import pl.szczepaniak.chat.exceptions.UserNotFoundException;
 import pl.szczepaniak.chat.model.UserRepositoryCRUD;
 import pl.szczepaniak.chat.model.entity.User;
 import pl.szczepaniak.chat.service.converter.UserToDtoConverter;
+import pl.szczepaniak.chat.service.dto.PasswordService;
 import pl.szczepaniak.chat.service.dto.UserDTO;
 
 import java.util.ArrayList;
@@ -21,54 +22,40 @@ import java.util.stream.Collectors;
 public class UserService {
     UserRepositoryCRUD userRepositoryCRUD;
     EmailService emailService;
+    PasswordService passwordService;
 
     @Autowired
-    public UserService(UserRepositoryCRUD userRepositoryCRUD, EmailService emailService) {
+    public UserService(UserRepositoryCRUD userRepositoryCRUD, EmailService emailService, PasswordService passwordService) {
         this.userRepositoryCRUD = userRepositoryCRUD;
         this.emailService = emailService;
+        this.passwordService = passwordService;
     }
 
     public long getIdByEmail(String email) throws UserNotFoundException {
         Optional<User> user = userRepositoryCRUD.getUserByEmail(email);
-        if(user.isPresent()){
-            return user.get().getId();
-        }
-        else {
-            throw new UserNotFoundException();
-        }
+        return user.orElseThrow(UserNotFoundException::new).getId();
     }
 
-    public void addNewUser(String email, String password, String nick) throws EmailAlreadyRegistered, NickAlreadyRegistered {
+    public void addNewUser(String email, String password, String nick) throws EmailAlreadyRegistered, NickAlreadyRegistered, UserNotFoundException {
         if(userRepositoryCRUD.getUserByEmail(email).isPresent()){
             throw new EmailAlreadyRegistered();
         }
         if(userRepositoryCRUD.getUserByNick(nick).isPresent()){
             throw new NickAlreadyRegistered();
         }
-
         userRepositoryCRUD.save(User.builder().password(password).nick(nick).email(email).enabled(false).build());
-        emailService.sendConfirmLink(email);
+        passwordService.generateUserCode(email);
     }
 
     public String getUserNick(String email) throws UserNotFoundException {
         Optional<User> user = userRepositoryCRUD.getUserByEmail(email);
-        if(user.isPresent()){
-            return user.get().getNick();
-        }
-        else {
-            throw new UserNotFoundException();
-        }
+        return user.orElseThrow(UserNotFoundException::new).getNick();
     }
 
     public List<UserDTO> getAllUsers(String nick, Integer page, Integer limit) throws UserNotFoundException {
         Optional<Page<User>> users = userRepositoryCRUD.findByNickContaining(nick, new PageRequest(page, limit));
-        if (users.isPresent()){
-            return users.get().getContent().stream()
-                    .map(user -> UserToDtoConverter.convert(user))
-                    .collect(Collectors.toList());
-        }
-        else {
-            throw new UserNotFoundException();
-        }
+        return users.orElseThrow(UserNotFoundException::new).getContent().stream()
+                .map(user -> UserToDtoConverter.convert(user))
+                .collect(Collectors.toList());
     }
 }

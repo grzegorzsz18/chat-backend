@@ -42,7 +42,7 @@ public class UserController {
     @PutMapping("/new")
     public ResponseEntity addNewUser(@RequestParam(value = "email") String email,
                            @RequestParam(value = "password") String password,
-                           @RequestParam(value = "nick") String nick) throws EmailAlreadyRegistered, NickAlreadyRegistered {
+                           @RequestParam(value = "nick") String nick) throws EmailAlreadyRegistered, NickAlreadyRegistered, UserNotFoundException {
         userService.addNewUser(email, password, nick);
         return new ResponseEntity(HttpStatus.CREATED);
     }

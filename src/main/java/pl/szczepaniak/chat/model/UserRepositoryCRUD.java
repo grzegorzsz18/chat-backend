@@ -12,6 +12,7 @@ import java.util.Optional;
 public interface UserRepositoryCRUD extends CrudRepository<User, Long> {
 
     Optional<User> getUserByEmail(String email);
+    Optional<User> getUserById(Long id);
     Optional<User> getUserByNick(String nick);
     Optional<Page<User>> findByNickContaining(String nick, Pageable pageable);
 }

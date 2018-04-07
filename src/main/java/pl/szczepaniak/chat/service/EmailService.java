@@ -22,10 +22,9 @@ public class EmailService {
     @Autowired
     private JavaMailSender javaMailSender;
 
-    public void sendConfirmLink(String email){
-        //todo activation account link
-        String text = "hello " + email;
-        String title = "hello title";
+    public void sendConfirmLink(String email, String code){
+        String text = "please confirm your email clicking in link " + "http://localhost:1818/password/user/" + email + "/" + code;
+        String title = "chat app email confirmation";
         sendSimpleMessage(email, text, title);
     }
 

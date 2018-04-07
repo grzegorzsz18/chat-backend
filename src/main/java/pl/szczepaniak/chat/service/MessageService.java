@@ -36,16 +36,12 @@ public class MessageService {
     }
 
     public List<MessageDTO> getAllByConversation(Long conversationId, Integer page, Integer limit) throws ConversationNotFoundException {
-        Optional<Conversation> conversation = conversationRepositoryCRUD.findOneById(conversationId);
-        if(!conversation.isPresent()){
-            throw new ConversationNotFoundException();
-        }
-        Optional<Page<Message>> messages = messageRepositoryCRUD
-                .getAllByConversationOrderByTimeDesc(conversation.get(), new PageRequest(page, limit));
-        if(!messages.isPresent()){
-            throw new ConversationNotFoundException();
-        }
-        return messages.get().getContent()
+        Conversation conversation = conversationRepositoryCRUD.findOneById(conversationId)
+                .orElseThrow(ConversationNotFoundException::new);
+
+        return messageRepositoryCRUD.getAllByConversationOrderByTimeDesc(conversation, new PageRequest(page, limit))
+                .orElseThrow(ConversationNotFoundException::new)
+                .getContent()
                 .stream()
                 .map(MessageToDtoConverter::convert)
                 .collect(Collectors.toList());
@@ -54,19 +50,15 @@ public class MessageService {
 
 
     public MessageDTO sendMessage(MessageDTO m) throws UserNotFoundException, ConversationNotFoundException {
-        Optional<User> user = userRepositoryCRUD.getUserByNick(m.getAutor());
-        if(!user.isPresent()){
-            throw new UserNotFoundException();
-        }
-        Optional<Conversation> conversation = conversationRepositoryCRUD.findOneById(m.getConversationId());
-        if(!conversation.isPresent()){
-            throw new ConversationNotFoundException();
-        }
+        User user = userRepositoryCRUD.getUserByNick(m.getAutor())
+                .orElseThrow(UserNotFoundException::new);
+        Conversation conversation = conversationRepositoryCRUD.findOneById(m.getConversationId())
+                .orElseThrow(ConversationNotFoundException::new);
         Message message = Message.builder()
-                .conversation(conversation.get())
+                .conversation(conversation)
                 .isDisplayed(false)
                 .text(m.getText())
-                .user(user.get())
+                .user(user)
                 .time(System.currentTimeMillis())
                 .build();
         messageRepositoryCRUD.save(message);
