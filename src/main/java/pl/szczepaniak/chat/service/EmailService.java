@@ -23,7 +23,7 @@ public class EmailService {
     private JavaMailSender javaMailSender;
 
     public void sendConfirmLink(String email, String code){
-        String text = "please confirm your email clicking in link " + "http://localhost:1818/password/user/" + email + "/" + code;
+        String text = "please confirm your email clicking in link " + AppConfig.SERVER_URI +"/password/user/" + email + "/" + code;
         String title = "chat app email confirmation";
         sendSimpleMessage(email, text, title);
     }
