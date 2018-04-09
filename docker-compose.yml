@@ -10,13 +10,15 @@ services:
   ports:
    - "1818:1818"
   environment:
-   - DATABASE_HOST=db_mysql,DATABASE_USER=root,DATABASE_PASSWORD=password,DATABASE_NAME=chat,DATABASE_PORT=3307
+   - DATABASE_HOST=db_mysql
+   - DATABASE_USER=root
+   - DATABASE_PASSWORD=password
+   - DATABASE_NAME=chat 
+   - DATABASE_PORT=3306
   depends_on:
    - db_mysql
-  volumes:
-   - .:/chat
-  networks:
-   - chat
+#  volumes:
+#   - .:/chat
 
  db_mysql:
   image: chat_mysql
@@ -28,14 +30,8 @@ services:
    - MYSQL_PASSWORD=password
    - MYSQL_ROOT_PASSWORD=password
    - MYSQL_DATABASE=chat
-  ports:
-   - "3307:3306"
-  volumes:
-   - db_mysql:/var/lib/mysql
-  networks:
-   - chat
+#  volumes:
+#   - db_mysql:/var/lib/mysql
 
-volumes:
- db_mysql:
-networks:
- chat:
+#volumes:
+# db_mysql:

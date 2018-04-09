@@ -24,7 +24,7 @@ public class PasswordService {
 
     public String confirmPassword(String code, String email) {
         Optional<User> user = userRepositoryCRUD.getUserByEmail(email);
-        if(user.isPresent()) {
+        if(user.isPresent() && user.get().getCode().equals(code)) {
             User u = user.get();
             u.setEnabled(true);
             userRepositoryCRUD.save(u);
